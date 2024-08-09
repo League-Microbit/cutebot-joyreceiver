@@ -19,6 +19,7 @@ let x = 0
 radio.setGroup(1)
 basic.forever(function () {
     if (b == 0) {
+        music.play(music.tonePlayable(262, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
         basic.showLeds(`
             . # # . .
             # . . # .
@@ -27,6 +28,7 @@ basic.forever(function () {
             # . . # .
             `)
     } else if (b == 1) {
+        music.play(music.tonePlayable(330, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
         basic.showLeds(`
             # # # . .
             # . . # .
