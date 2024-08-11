@@ -1,5 +1,5 @@
 
-> Open this page at [https://jointheleague-it.github.io/joyreciever/](https://jointheleague-it.github.io/joyreciever/)
+> Open this page at [https://jointheleague-it.github.io/joyreciever/](https://jointheleague-it.github.io/cutebot-joyreciever/)
 
 ## Use as Extension
 
