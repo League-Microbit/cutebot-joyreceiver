@@ -57,7 +57,8 @@ basic.forever(function () {
     } else {
         basic.clearScreen()
         fwd_speed = Math.map(y - 0, 0, 1023, 0, 200) - 100
-        turn_speed = Math.map(x - 0, 0, 1023, 100, 0) - 50
+        turn_speed = Math.map(x - 0, 0, 1023, 200, 0) - 100
+        turn_speed = turn_speed / 4
         lw_speed = fwd_speed + turn_speed
         rw_speed = fwd_speed - turn_speed
         cuteBot.motors(lw_speed, rw_speed)
