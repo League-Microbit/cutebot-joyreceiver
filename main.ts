@@ -49,6 +49,7 @@ basic.forever(function () {
         basic.showArrow(ArrowNames.South)
     } else if (input.logoIsPressed()) {
         RadioGroup = (RadioGroup + 1) % 3
+        radio.setGroup(RadioGroup)
         basic.showNumber(RadioGroup)
         basic.pause(1000)
     } else {
