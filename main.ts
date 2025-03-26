@@ -26,34 +26,31 @@ let fwd_speed = 0
 let y = 0
 let b = 0
 let x = 0
+let RadioGroup = 0
 radio.setGroup(1)
+let strip = neopixel.create(DigitalPin.P15, 2, NeoPixelMode.RGB)
 basic.forever(function () {
     if (b == 0) {
-        music.play(music.tonePlayable(262, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
-        basic.showLeds(`
-            . # # . .
-            # . . # .
-            # # # # .
-            # . . # .
-            # . . # .
-            `)
+        basic.showIcon(IconNames.Heart)
+        strip.showColor(neopixel.colors(NeoPixelColors.Red))
     } else if (b == 1) {
+        basic.showIcon(IconNames.Happy)
+        strip.showColor(neopixel.colors(NeoPixelColors.Blue))
         music.play(music.tonePlayable(330, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
-        basic.showLeds(`
-            # # # . .
-            # . . # .
-            # # # . .
-            # . . # .
-            # # # # .
-            `)
     } else if (b == 2) {
+        cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x7f00ff)
         basic.showArrow(ArrowNames.West)
     } else if (b == 3) {
         basic.showArrow(ArrowNames.North)
     } else if (b == 4) {
+        cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x00ff00)
         basic.showArrow(ArrowNames.East)
     } else if (b == 5) {
         basic.showArrow(ArrowNames.South)
+    } else if (input.logoIsPressed()) {
+        RadioGroup = (RadioGroup + 1) % 3
+        basic.showNumber(RadioGroup)
+        basic.pause(1000)
     } else {
         basic.clearScreen()
         fwd_speed = Math.map(y - 0, 0, 1023, 0, 200) - 100
