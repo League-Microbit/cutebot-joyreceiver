@@ -24,11 +24,12 @@ let lw_speed = 0
 let turn_speed = 0
 let fwd_speed = 0
 let y = 0
-let b = 0
 let x = 0
-let RadioGroup = 0
+let b = 0
+let RadioGroup = 1
 radio.setGroup(1)
 let strip = neopixel.create(DigitalPin.P15, 2, NeoPixelMode.RGB)
+b = -1
 basic.forever(function () {
     if (b == 0) {
         basic.showIcon(IconNames.Heart)
