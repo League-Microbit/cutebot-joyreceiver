@@ -38,15 +38,14 @@ let b = 0
 let enable_motors = 0
 let RadioGroup = 1
 radio.setGroup(1)
-let strip = neopixel.create(DigitalPin.P15, 2, NeoPixelMode.RGB)
+let strip = neopixel.create(DigitalPin.P15, 2, NeoPixelMode.RGBW)
 enable_motors = 0
 b = -1
 basic.showIcon(IconNames.Ghost)
 basic.forever(function () {
+    strip.showColor(neopixel.colors(NeoPixelColors.Red))
     if (b == 0) {
         basic.showIcon(IconNames.Heart)
-        music.play(music.tonePlayable(220, music.beat(BeatFraction.Quarter)), music.PlaybackMode.InBackground)
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
     } else if (b == 1) {
         basic.showIcon(IconNames.Happy)
         strip.showColor(neopixel.colors(NeoPixelColors.Blue))
@@ -55,18 +54,20 @@ basic.forever(function () {
         cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x7f00ff)
         basic.showArrow(ArrowNames.West)
     } else if (b == 3) {
+        cuteBot.colorLight(cuteBot.RGBLights.ALL, 0xffff00)
         basic.showArrow(ArrowNames.North)
         music.play(music.builtinPlayableSoundEffect(soundExpression.sad), music.PlaybackMode.InBackground)
     } else if (b == 4) {
         cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x00ff00)
         basic.showArrow(ArrowNames.East)
     } else if (b == 5) {
+        cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x00ffff)
         basic.showArrow(ArrowNames.South)
         music.play(music.builtinPlayableSoundEffect(soundExpression.happy), music.PlaybackMode.InBackground)
     } else if (b == 6) {
         basic.showNumber(6)
     } else if (b == 7) {
-        music.play(music.builtinPlayableSoundEffect(soundExpression.giggle), music.PlaybackMode.UntilDone)
+        music.play(music.builtinPlayableSoundEffect(soundExpression.giggle), music.PlaybackMode.InBackground)
     } else if (input.logoIsPressed()) {
         RadioGroup = (RadioGroup + 1) % 3
         radio.setGroup(RadioGroup)

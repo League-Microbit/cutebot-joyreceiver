@@ -1,5 +1,13 @@
+def debug():
+    serial.write_value("x", x)
+    serial.write_value("y", y)
+    serial.write_value("fwd", fwd_speed)
+    serial.write_value("turn", turn_speed)
+    serial.write_value("rw", rw_speed)
+    serial.write_value("lw", lw_speed)
+
 def on_received_value(name, value):
-    global x, b, y
+    global x, b, y, enable_motors
     if name == "x":
         x = value
         b = -1
@@ -10,6 +18,7 @@ def on_received_value(name, value):
         b = value
     else:
         pass
+    enable_motors = 1
     if x > 507 and x < 525:
         x = 512
     if y > 507 and y < 525:
@@ -18,46 +27,58 @@ radio.on_received_value(on_received_value)
 
 py = 0
 px = 0
-rw_speed = 0
 lw_speed = 0
+rw_speed = 0
 turn_speed = 0
 fwd_speed = 0
 y = 0
-b = 0
 x = 0
+b = 0
+enable_motors = 0
+RadioGroup = 1
 radio.set_group(1)
+strip = neopixel.create(DigitalPin.P15, 2, NeoPixelMode.RGB)
+enable_motors = 0
+b = -1
+basic.show_icon(IconNames.GHOST)
 
 def on_forever():
-    global fwd_speed, turn_speed, lw_speed, rw_speed, px, py
+    global RadioGroup, fwd_speed, turn_speed, lw_speed, rw_speed, px, py
+    music.play(music.tone_playable(220, music.beat(BeatFraction.QUARTER)),
+        music.PlaybackMode.IN_BACKGROUND)
+    strip.show_color(neopixel.colors(NeoPixelColors.RED))
     if b == 0:
-        music.play(music.tone_playable(262, music.beat(BeatFraction.SIXTEENTH)),
-            music.PlaybackMode.IN_BACKGROUND)
-        basic.show_leds("""
-            . # # . .
-            # . . # .
-            # # # # .
-            # . . # .
-            # . . # .
-            """)
+        basic.show_icon(IconNames.HEART)
     elif b == 1:
-        music.play(music.tone_playable(330, music.beat(BeatFraction.SIXTEENTH)),
+        basic.show_icon(IconNames.HAPPY)
+        strip.show_color(neopixel.colors(NeoPixelColors.BLUE))
+        music.play(music.tone_playable(330, music.beat(BeatFraction.QUARTER)),
             music.PlaybackMode.IN_BACKGROUND)
-        basic.show_leds("""
-            # # # . .
-            # . . # .
-            # # # . .
-            # . . # .
-            # # # # .
-            """)
     elif b == 2:
+        cuteBot.color_light(cuteBot.RGBLights.ALL, 0x7f00ff)
         basic.show_arrow(ArrowNames.WEST)
     elif b == 3:
         basic.show_arrow(ArrowNames.NORTH)
+        music.play(music.builtin_playable_sound_effect(soundExpression.sad),
+            music.PlaybackMode.IN_BACKGROUND)
     elif b == 4:
+        cuteBot.color_light(cuteBot.RGBLights.ALL, 0x00ff00)
         basic.show_arrow(ArrowNames.EAST)
     elif b == 5:
         basic.show_arrow(ArrowNames.SOUTH)
-    else:
+        music.play(music.builtin_playable_sound_effect(soundExpression.happy),
+            music.PlaybackMode.IN_BACKGROUND)
+    elif b == 6:
+        basic.show_number(6)
+    elif b == 7:
+        music.play(music.builtin_playable_sound_effect(soundExpression.giggle),
+            music.PlaybackMode.UNTIL_DONE)
+    elif input.logo_is_pressed():
+        RadioGroup = (RadioGroup + 1) % 3
+        radio.set_group(RadioGroup)
+        basic.show_number(RadioGroup)
+        basic.pause(1000)
+    elif enable_motors == 1:
         basic.clear_screen()
         fwd_speed = Math.map(y - 0, 0, 1023, 0, 200) - 100
         turn_speed = Math.map(x - 0, 0, 1023, 200, 0) - 100
@@ -68,10 +89,6 @@ def on_forever():
         px = Math.map(x - 100, 1023, 0, -2, 2) + 2
         py = Math.map(y - 100, 1023, 0, -2, 2) + 2
         led.plot(px, py)
-        serial.write_value("x", x)
-        serial.write_value("y", y)
-        serial.write_value("fwd", fwd_speed)
-        serial.write_value("turn", turn_speed)
-        serial.write_value("rw", rw_speed)
-        serial.write_value("lw", lw_speed)
+    else:
+        pass
 basic.forever(on_forever)
