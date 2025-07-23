@@ -1,3 +1,9 @@
+function speedMap (input2: number, power: number) {
+    let sign = input2 >= 0 ? 1 : -1
+normalized = Math.abs(input2) / 100
+    scaled = normalized ** power
+    return sign * scaled * 100
+}
 function debug () {
     serial.writeValue("x", x)
     serial.writeValue("y", y)
@@ -34,6 +40,8 @@ let turn_speed = 0
 let fwd_speed = 0
 let y = 0
 let x = 0
+let scaled = 0
+let normalized = 0
 let b = 0
 let enable_motors = 0
 let RadioGroup = 1
@@ -42,6 +50,7 @@ let strip = neopixel.create(DigitalPin.P15, 2, NeoPixelMode.RGBW)
 enable_motors = 0
 b = -1
 basic.showIcon(IconNames.Ghost)
+cuteBot.setServo(cuteBot.ServoList.S1, 150)
 basic.forever(function () {
     strip.showColor(neopixel.colors(NeoPixelColors.Red))
     if (b == 0) {
@@ -53,6 +62,7 @@ basic.forever(function () {
     } else if (b == 2) {
         cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x7f00ff)
         basic.showArrow(ArrowNames.West)
+        cuteBot.setServo(cuteBot.ServoList.S1, 90)
     } else if (b == 3) {
         cuteBot.colorLight(cuteBot.RGBLights.ALL, 0xffff00)
         basic.showArrow(ArrowNames.North)
@@ -60,6 +70,7 @@ basic.forever(function () {
     } else if (b == 4) {
         cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x00ff00)
         basic.showArrow(ArrowNames.East)
+        cuteBot.setServo(cuteBot.ServoList.S1, 0)
     } else if (b == 5) {
         cuteBot.colorLight(cuteBot.RGBLights.ALL, 0x00ffff)
         basic.showArrow(ArrowNames.South)
@@ -76,6 +87,7 @@ basic.forever(function () {
     } else if (enable_motors == 1) {
         basic.clearScreen()
         fwd_speed = Math.map(y - 0, 0, 1023, 0, 200) - 100
+        fwd_speed = speedMap(fwd_speed, 2)
         turn_speed = Math.map(x - 0, 0, 1023, 200, 0) - 100
         turn_speed = turn_speed / 4
         lw_speed = fwd_speed + turn_speed
